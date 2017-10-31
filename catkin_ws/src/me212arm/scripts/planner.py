@@ -1,5 +1,5 @@
 import numpy as np
-
+import math
 joint_limits = [
     [-np.pi/2, np.pi/4],  # make joint 1 smaller from real
     [-np.pi, np.pi]]  
@@ -29,20 +29,16 @@ def ik(target_TCP_xz, q0):
     x, z = target_TCP_xz[0], target_TCP_xz[1]
     ik_candidate = []
      
-    # calculate q_1 and q_2 using trigonometry
-    # known parameters a1: link 1's length, a2: link 2's length, (x,z): the coordinates for the target point
-
-
     # candidate 1
-    # q_1=???
-    # q_2=???
 
+    q_2= -2 * math.atan(((a1+a2)**2-(x**2+z**2))/((x**2+z**2)-(a1-a2)**2))
+    q_1= math.atan2(z,x) - math.atan2(a2*math.sin(q_2),a1 + a2*math.cos(q_2)) - math.pi/2
     if not np.isnan([q_1, q_2]).any():
         ik_candidate.append([q_1, q_2])
     
     # candidate 2
-    # q_1=???
-    # q_2=???
+    q_2= 2 * math.atan(((a1+a2)**2-(x**2+z**2))/((x**2+z**2)-(a1-a2)**2))
+    q_1= math.atan2(z,x) - math.atan2(a2*math.sin(q_2),a1 + a2*math.cos(q_2)) - math.pi/2
   
     if not np.isnan([q_1, q_2]).any():
         ik_candidate.append([q_1, q_2])
